@@ -1,6 +1,9 @@
+import { useState } from "react";
+
 const initialItems = [
   { id: 1, description: "Passports", quantity: 2, packed: false },
-  { id: 2, description: "Socks", quantity: 12, packed: false },
+  { id: 2, description: "Socks", quantity: 12, packed: true },
+  { id: 3, description: "Charger", quantity: 2, packed: false },
 ];
 export default function App() {
   return (
@@ -13,35 +16,66 @@ export default function App() {
   );
 }
 function Logo() {
-  return <h1>Go Taiwan</h1>;
+  return <h1>🏝️Taiwan 🧳</h1>;
 }
 function Form() {
-  function handleAdd() {}
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(1);
+
+  function handleSubmit(e) {
+    e.preventDefault(); // prevent reload
+    if (!description) return;
+    const newItem = { description, quantity, packed: false, id: Date.now() };
+    console.log(newItem);
+    setQuantity(1);
+    setDescription("");
+  }
   return (
-    <div className="add-form">
-      <span>What do you need for your 😍 trip?</span>
-      <input placeholder="Item..."></input>
-      <button onClick={handleAdd}>add</button>
-    </div>
+    <form className="add-form" onSubmit={handleSubmit}>
+      <h3>What do you need for your 😍 trip?</h3>
+      <select
+        value={quantity}
+        onChange={(e) => setQuantity(Number(e.target.value))}>
+        {/* [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]*/}
+        {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
+          <option value={num} key={num}>
+            {num}
+          </option>
+        ))}
+      </select>
+      <input
+        placeholder="Item..."
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}></input>
+      <button>add</button>
+    </form>
   );
 }
 function PackingList() {
   return (
     <div className="list">
-      <ul className="list">
-        <li></li>
+      <ul>
+        {initialItems.map((item) => (
+          <Item item={item} key={item.id} />
+        ))}
       </ul>
-      <list className="actions">sort by input order</list>
     </div>
   );
 }
 function Stats() {
   return (
-    <div className="stats">
-      <h1>You have 66 items on your list, and you already packed %</h1>
-    </div>
+    <footer className="stats">
+      <em> 💼 You have X items on your list, and you already packed X (x)%</em>
+    </footer>
   );
 }
-function Item(props) {
-  return;
+function Item({ item }) {
+  return (
+    <li>
+      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
+        {item.quantity} {item.description}
+      </span>
+      <button>❌</button>
+    </li>
+  );
 }
