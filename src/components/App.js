@@ -13,7 +13,7 @@ export default function App() {
   const [items, setItems] = useState([]);
 
   function handleAddItem(newItem) {
-    setItems(() => [...items, newItem]);
+    setItems((items) => [...items, newItem]);
   }
   function handleDeleteItem(id) {
     setItems((items) => items.filter((el) => el.id !== id));

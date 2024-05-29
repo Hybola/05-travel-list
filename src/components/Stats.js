@@ -8,7 +8,6 @@ export default function Stats({ items }) {
   const numItems = items.length;
   const numPacked = items.filter((el) => el.packed).length;
   const percentage = Math.round((numPacked / numItems) * 100);
-  console.log(percentage, numPacked, numItems);
   return (
     <footer className="stats">
       <em>
